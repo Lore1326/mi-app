@@ -27,6 +27,17 @@ const crearHistorial = async (req, res) => {
             });
         }
 
+        if (typeof parametros.fecha === 'string') {
+            const fechaConvertida = new Date(parametros.fecha);
+            if (isNaN(fechaConvertida.getTime())) {
+                return res.status(400).json({
+                    status: "Error",
+                    mensaje: "La fecha proporcionada es inválida."
+                });
+            }
+            parametros.fecha = fechaConvertida;
+        }
+
         // Crear una nueva instancia de Historial
         const historial = new Historial(parametros);
         const historialGuardado = await historial.save();

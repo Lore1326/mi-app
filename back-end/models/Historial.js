@@ -12,7 +12,7 @@ const HistoriaSchema = Schema({
     },
     archivoECG: {
         type: String,
-         required: true 
+        default: "default.ccv" 
     },
     ssn: { 
         type: String, 

@@ -11,7 +11,6 @@ const validarHistorial = (parametros) => {
         typeof parametros.nombrePaciente !== 'string' ||
         !(parametros.fecha instanceof Date) ||
         isNaN(parametros.fecha.getTime()) ||  // Verificar si la fecha es válida
-        typeof parametros.archivoECG !== 'string' ||
         typeof parametros.ssn !== 'string' ||
         typeof parametros.pacientId !== 'string' ||
         typeof parametros.age !== 'number' ||
@@ -22,9 +21,8 @@ const validarHistorial = (parametros) => {
         return { success: false, message: "Algunos datos del historial son inválidos o están ausentes." };
     }
 
-    // Validar que los parametros recibidos no estén vacíos
+    // Validar que los parametros recibidos no estén vacíos, excepto archivoECG
     parametros.nombrePaciente = validator.trim(parametros.nombrePaciente);
-    parametros.archivoECG = validator.trim(parametros.archivoECG);
     parametros.ssn = validator.trim(parametros.ssn);
     parametros.pacientId = validator.trim(parametros.pacientId);
     parametros.curp = validator.trim(parametros.curp);
@@ -33,7 +31,6 @@ const validarHistorial = (parametros) => {
 
     if (
         validator.isEmpty(parametros.nombrePaciente) ||
-        validator.isEmpty(parametros.archivoECG) ||
         validator.isEmpty(parametros.ssn) ||
         validator.isEmpty(parametros.pacientId) ||
         validator.isEmpty(parametros.curp) ||
@@ -43,10 +40,7 @@ const validarHistorial = (parametros) => {
         return { success: false, message: "Faltan datos por enviar" };
     }
 
-    // Validar el número de teléfono
-    if (!validator.isMobilePhone(parametros.phone, 'es-MX')) {
-        return { success: false, message: "El número de teléfono es inválido" };
-    }
+    
 
     // Validar la longitud del SSN
     if (!validator.isLength(parametros.ssn, { min: 9, max: 9 })) {

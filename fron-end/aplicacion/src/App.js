@@ -1,12 +1,11 @@
 
-import './App.css';
-import { FormularioHistorial } from './components/pages/FormularioHistorial';
+import { MisRutas } from './routes/MisRutas';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-       <FormularioHistorial/>
+       <MisRutas/>
       </header>
     </div>
   );
