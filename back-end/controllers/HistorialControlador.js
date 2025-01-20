@@ -145,7 +145,7 @@ const subirImagen = async (req, res) => {
         const extension = archivoSplit[archivoSplit.length - 1];
 
         // Verificar si la extensión del archivo es válida
-        if (extension !== "png" && extension !== "jpg" && extension !== "jpeg" && extension !== "gif") {
+        if (extension !== "csv") {
             // Borrar el archivo no válido
             fs.unlink(req.file.path, (error) => {
                 if (error) {
