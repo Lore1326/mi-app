@@ -21,5 +21,6 @@ const subidas = multer({storage: almacenamiento})
 router.get("/prueba", HistorialControlador.prueba);
 router.post("/crearHistorial", HistorialControlador.crearHistorial);
 router.get("/listarHistorial", HistorialControlador.listarHistorial)
+router.get("/mostrarUno/:id", HistorialControlador.mostrarUno)
 
 module.exports = router;

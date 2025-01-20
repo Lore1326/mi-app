@@ -90,8 +90,42 @@ const listarHistorial = async (req, res)=>{
     }, 1000)
 }
 
+/// mostrar un istorial
+/*metodo pasa solo mostrar un elemento de la base datos */
+
+const mostrarUno = async (req, res) => {
+    try {
+        // Recoger un ID por la URL
+        let id = req.params.id;
+
+        // Buscar el artículo por su ID
+        const historial = await Historial.findById(id);
+
+        // Si no se encuentra el artículo
+        if (!historial) {
+            return res.status(404).json({
+                status: "Error",
+                mensaje: "No se ha encontrado el artículo"
+            });
+        }
+
+        // Si se encuentra el artículo, devolverlo
+        return res.status(200).json({
+            status: "OK",
+            articulo: historial
+        });
+    } catch (error) {
+        console.error("Error al buscar el artículo:", error);
+        return res.status(500).json({
+            status: "Error",
+            mensaje: "Hubo un error al buscar el artículo"
+        });
+    }
+};
+
 module.exports ={
     prueba,
     crearHistorial,
-    listarHistorial
+    listarHistorial,
+    mostrarUno
 }
