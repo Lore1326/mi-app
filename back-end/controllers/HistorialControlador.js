@@ -123,9 +123,82 @@ const mostrarUno = async (req, res) => {
     }
 };
 
+//Metodo para eliminar un historial
+
+// Subir imagen
+
+/*Metodo para subir imagen  */
+
+const subirImagen = async (req, res) => {
+    try {
+        // Verificar si el archivo se ha cargado correctamente
+        if (!req.file) {
+            return res.status(400).json({
+                status: "Error",
+                mensaje: "Petición inválida: No se ha proporcionado ningún archivo"
+            });
+        }
+
+        // Obtener el nombre del archivo y su extensión
+        const nombreArchivo = req.file.originalname;
+        const archivoSplit = nombreArchivo.split(".");
+        const extension = archivoSplit[archivoSplit.length - 1];
+
+        // Verificar si la extensión del archivo es válida
+        if (extension !== "png" && extension !== "jpg" && extension !== "jpeg" && extension !== "gif") {
+            // Borrar el archivo no válido
+            fs.unlink(req.file.path, (error) => {
+                if (error) {
+                    console.error("Error al borrar el archivo:", error);
+                }
+            });
+            // Responder con un mensaje de error
+            return res.status(400).json({
+                status: "Error",
+                mensaje: "La extensión del archivo no es válida"
+            });
+        } else {
+            // Recoger el ID del artículo a editar
+            const articulo_id = req.params.id;
+
+            // Buscar el artículo por su ID
+            const articulo = await Historial.findById(articulo_id);
+
+            // Verificar si se encontró el artículo
+            if (!articulo) {
+                return res.status(404).json({
+                    status: "Error",
+                    mensaje: "No se encontró el artículo para actualizar"
+                });
+            }
+
+            // Actualizar el artículo con la nueva imagen
+            articulo.archivoECG = req.file.filename;
+
+            // Guardar el artículo actualizado en la base de datos
+            const articuloActualizado = await articulo.save();
+
+            // Devolver respuesta con el artículo actualizado
+            return res.status(200).json({
+                status: "OK",
+                articulo: articuloActualizado,
+                mensaje: "Artículo actualizado con éxito"
+            });
+        }
+    } catch (error) {
+        console.error("Error al subir la imagen:", error);
+        return res.status(500).json({
+            status: "Error",
+            mensaje: "Hubo un problema al subir la imagen"
+        });
+    }
+};
+
+
 module.exports ={
     prueba,
     crearHistorial,
     listarHistorial,
-    mostrarUno
+    mostrarUno,
+    subirImagen
 }
